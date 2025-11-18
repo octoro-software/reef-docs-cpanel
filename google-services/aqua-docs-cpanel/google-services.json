@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "747659563246",
+    "project_id": "aqua-docs",
+    "storage_bucket": "aqua-docs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747659563246:android:dced83892cb098c1bee3ff",
+        "android_client_info": {
+          "package_name": "com.octoro.aquadocs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPfCnG6__1Y4hkWdrUDg8N3Xf4iD6peEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

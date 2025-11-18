@@ -1,0 +1,72 @@
+{
+  "cli": {
+    "version": ">= 12.5.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "channel": "development",
+      "env": {
+        "BRANCH_IO_KEY": "key_test_hwb2JXP8B0Joa5HTHJyaucjiywl0V57c",
+        "APP_ENV": "development",
+        "API_BASE_URL": "https://dev-api.reef-docs.co.uk/api",
+        "MEDIA_SERVICE_URL": "https://dev-media.reef-docs.co.uk",
+        "CDN_VIDEO_BASE_URL": "https://vz-979e3ba8-f9c.b-cdn.net/"
+      }
+    },
+    "developmentInternal": {
+      "distribution": "internal",
+      "channel": "development",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "API_BASE_URL": "https://dev-api.reef-docs.co.uk/api",
+        "BRANCH_IO_KEY": "key_test_hwb2JXP8B0Joa5HTHJyaucjiywl0V57c",
+        "APP_ENV": "development",
+        "MEDIA_SERVICE_URL": "https://dev-media.reef-docs.co.uk",
+        "CDN_VIDEO_BASE_URL": "https://vz-979e3ba8-f9c.b-cdn.net/"
+      }
+    },
+
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "BRANCH_IO_KEY": "key_test_hwb2JXP8B0Joa5HTHJyaucjiywl0V57c",
+        "API_BASE_URL": "https://dev-api.reef-docs.co.uk/api",
+        "MEDIA_SERVICE_URL": "https://dev-media.reef-docs.co.uk",
+        "APP_ENV": "development",
+        "CDN_VIDEO_BASE_URL": "https://vz-979e3ba8-f9c.b-cdn.net/"
+      }
+    },
+
+    "productionInternal": {
+      "distribution": "internal",
+      "channel": "production",
+      "environment": "production",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "BRANCH_IO_KEY": "key_test_hwb2JXP8B0Joa5HTHJyaucjiywl0V57c"
+      }
+    },
+
+    "production": {
+      "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "BRANCH_IO_KEY": "key_live_jzc5U8HYr4Sgp5TIJSxdegoitFoZLZL5"
+      }
+    }
+  },
+
+  "submit": {
+    "production": {}
+  }
+}

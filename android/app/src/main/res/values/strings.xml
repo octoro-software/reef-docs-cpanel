@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Aqua Docs Dev</string>
+  <string name="expo_runtime_version">1.0.4</string>
+  <string name="facebook_app_id">3467155740092925</string>
+  <string name="facebook_client_token">4388e8dcc2a773dc32c467208e31985e</string>
+  <string name="fb_login_protocol_scheme">fb3467155740092925</string>
+</resources>

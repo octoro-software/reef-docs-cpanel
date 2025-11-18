@@ -1,0 +1,25 @@
+import {
+  CORAL_HELP_PATH,
+  DISEASE_HELP_PATH,
+  FRIEND_OR_FOE_PATH,
+  SOCIAL_PATH,
+  POST_CLASSIFICATION_CORAL_HELP,
+  POST_CLASSIFICATION_DISEASE_IDENTIFICATION,
+  POST_CLASSIFICATION_FRIEND_OR_FOE,
+  POST_CLASSIFICATION_GENERAL_HELP,
+} from "../constants";
+
+export const getPostUrlByClassification = (classification) => {
+  switch (classification) {
+    case POST_CLASSIFICATION_CORAL_HELP:
+      return CORAL_HELP_PATH;
+    case POST_CLASSIFICATION_DISEASE_IDENTIFICATION:
+      return DISEASE_HELP_PATH;
+    case POST_CLASSIFICATION_FRIEND_OR_FOE:
+      return FRIEND_OR_FOE_PATH;
+    case POST_CLASSIFICATION_GENERAL_HELP:
+      return SOCIAL_PATH;
+    default:
+      break;
+  }
+};
