@@ -38,6 +38,7 @@ import {
   setDosageData,
 } from "../../store/slices/testingSlice";
 import apiClient from "../../api/apiClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const CHART_HEIGHT = 250;
@@ -46,7 +47,6 @@ const INDICATOR_OUTER_RADIUS = 10;
 
 export const TestHistoryChart = ({
   elementId,
-  tankId,
   measurementUnit,
   elementName,
   activeTab,
@@ -71,6 +71,9 @@ export const TestHistoryChart = ({
 
   const getHistoricResults = async () => {
     setLoading(true);
+
+    const tankId = await AsyncStorage.getItem("tankId");
+
     const response = await apiClient.post("/tests/elementGraphHistory", {
       elementId,
       tankId,
@@ -92,10 +95,10 @@ export const TestHistoryChart = ({
   const activeData = isDosing ? dosageData : chartData;
 
   useEffect(() => {
-    if (tankId && elementId) {
+    if (elementId) {
       getHistoricResults();
     }
-  }, [tankId, elementId]);
+  }, [elementId]);
 
   const indicatorXIndex = useSharedValue<number>(0);
 
@@ -153,6 +156,8 @@ export const TestHistoryChart = ({
       "1Y": 12,
     };
     const months = monthsMap[tf] || 1;
+
+    const tankId = await AsyncStorage.getItem("tankId");
 
     const response = await apiClient.post("/tests/elementGraphHistory", {
       elementId,

@@ -1,6 +1,5 @@
 import React from "react";
 import { useNotificationHandler } from "../hooks/usePushNotifications";
-import { DataLoading } from "../elements/DataLoading/DataLoading";
 
 export const PushNotificationProvider = ({ children }) => {
   // This provider can be used to handle push notifications
@@ -10,7 +9,7 @@ export const PushNotificationProvider = ({ children }) => {
   const pushNotificationReceived = useNotificationHandler();
 
   if (pushNotificationReceived) {
-    return <DataLoading />;
+    return <></>;
   }
 
   return <React.Fragment>{children}</React.Fragment>;

@@ -3,19 +3,43 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { SystemBars } from "react-native-edge-to-edge";
 import { getAppDimensions } from "../utility/dimensions";
-import { Grid, GridItem, Heading, Icon, Text } from "../components";
+import { Grid, GridItem, Heading, Icon, Select, Text } from "../components";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LineChart } from "../components/LineChart";
 import { WHITE } from "../constants";
 import { useNavigate } from "react-router-native";
+import { useGetTanks, useTankList } from "../hooks/useTanks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { height, width } = getAppDimensions();
 
 export const SettingsScreen: React.FC = () => {
-  const navigate = useNavigate();
+  const [activeTank, setActiveTank] = useState(null);
+
+  const tanks = useTankList();
+
+  const [getTanks] = useGetTanks();
+
+  useEffect(() => {
+    getTanks();
+  }, []);
+
+  const [activeMenu, setActiveMenu] = useState("tank");
 
   useEffect(() => {
     SystemBars.setHidden(true);
+    getActiveTankValue("tankId");
   }, []);
+
+  const getActiveTankValue = async (key: string) => {
+    const value = await AsyncStorage.getItem(key);
+    setActiveTank(value);
+  };
+
+  const handleValueSelect = async (key: string, value: string) => {
+    await AsyncStorage.setItem(key, value);
+
+    setActiveTank(value);
+  };
 
   return (
     <View style={styles.root}>
@@ -39,14 +63,18 @@ export const SettingsScreen: React.FC = () => {
           >
             <Grid direction="column">
               {menu.map((item) => (
-                <Grid
-                  direction="row"
-                  gap={8}
+                <TouchableOpacity
+                  onPress={() => setActiveMenu(item?.definition)}
                   key={item.definition}
-                  style={{ marginBottom: 20, padding: 16 }}
                 >
-                  <Text style={{ color: WHITE }}>{item.label}</Text>
-                </Grid>
+                  <Grid
+                    direction="row"
+                    gap={8}
+                    style={{ marginBottom: 20, padding: 16 }}
+                  >
+                    <Text style={{ color: WHITE }}>{item.label}</Text>
+                  </Grid>
+                </TouchableOpacity>
               ))}
             </Grid>
           </GridItem>
@@ -57,21 +85,19 @@ export const SettingsScreen: React.FC = () => {
               height: height - 32,
             }}
           >
-            <Grid direction="column">
-              {menu.map((item) => (
-                <Grid
-                  direction="row"
-                  gap={8}
-                  key={item.definition}
-                  style={{ marginBottom: 20, padding: 16 }}
-                >
-                  <Icon name="settings" width={24} height={24} fill={WHITE} />
-                  <Text style={{ color: WHITE, fontSize: 18 }}>
-                    {item.label}
-                  </Text>
-                </Grid>
-              ))}
-            </Grid>
+            {activeMenu === "tank" && (
+              <Grid direction="column" gap={16}>
+                <Select
+                  options={tanks}
+                  labelKey="name"
+                  valueKey="id"
+                  label="Active Tank"
+                  onConfirm={(v) => handleValueSelect("tankId", v)}
+                  title="Select Tank"
+                  value={activeTank}
+                />
+              </Grid>
+            )}
           </GridItem>
         </Grid>
       </LinearGradient>

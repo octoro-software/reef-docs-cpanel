@@ -8,3 +8,6 @@ export * from "./Modal/ModalComposition";
 export * from "./Modal/Modal";
 export * from "./ModalHeader/ModalHeader";
 export * from "./LoadingSpinner/LoadingSpinner";
+export * from "./Form/TextInput/TextInput";
+export * from "./Form/Checkbox/Checkbox";
+export * from "./Form/Select/Select";

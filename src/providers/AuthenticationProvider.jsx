@@ -10,7 +10,6 @@ import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "../constants/global";
-import { DataLoading } from "../elements/DataLoading/DataLoading";
 
 export const AuthenticationContext = createContext();
 
@@ -52,7 +51,7 @@ export const AuthenticationProvider = ({ children }) => {
     init();
   }, []);
 
-  if (loading) return <DataLoading />;
+  if (loading) return <></>;
 
   return (
     <AuthenticationContext.Provider value={{ getUserProfile, setAuthed }}>

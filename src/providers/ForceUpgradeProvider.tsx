@@ -10,7 +10,6 @@ import { ForceUpgrade } from "../elements/ForceUpgrade/ForceUpgrade";
 import BootSplash from "react-native-bootsplash";
 import { Logo } from "../components/Logo/Logo";
 import { getAppVersionInfo } from "../utility/getAppVersion";
-import { DataLoading } from "../elements/DataLoading/DataLoading";
 
 const isVersionGreater = (a: string, b: string): boolean => {
   const aParts = a.split(".").map(Number);
@@ -65,7 +64,7 @@ export const ForceUpgradeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   if (upgradeRequired === "pending") {
-    return <DataLoading />;
+    return <></>;
   }
 
   if (upgradeRequired) {

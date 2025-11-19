@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiClient from "../api/apiClient";
 import { selectElements } from "../store/slices/IcpSlice";
 import { selectActiveTank } from "../store/slices/tankSlice";
@@ -23,13 +24,13 @@ type Props = {
 };
 
 export const useTestHistoryForTank = () => {
-  const activeTank = useAppSelector(selectActiveTank);
-
   const dispatch = useAppDispatch();
 
   const getData = async (month) => {
+    const tankId = await AsyncStorage.getItem("tankId");
+
     const response = await apiClient.post(`/tests`, {
-      tankId: activeTank,
+      tankId: tankId,
       limit: 4,
       month,
     });
@@ -41,13 +42,13 @@ export const useTestHistoryForTank = () => {
 };
 
 export const useTestHistoryCurrentStanding = () => {
-  const activeTank = useAppSelector(selectActiveTank);
-
   const dispatch = useAppDispatch();
 
   const getData = async () => {
+    const tankId = await AsyncStorage.getItem("tankId");
+
     const response = await apiClient.post(`/tests/currentStanding`, {
-      tankId: activeTank,
+      tankId: tankId,
     });
 
     dispatch(setCurrentStanding(response?.data?.data));
@@ -63,10 +64,11 @@ export const useGetTestHistory = () => {
     type,
     date,
     historic,
-    tankId,
     referenceIndex,
     limit,
   }: Props) => {
+    const tankId = await AsyncStorage.getItem("tankId");
+
     const response = await apiClient.post("/tests", {
       type,
       date,
@@ -84,69 +86,4 @@ export const useGetTestHistory = () => {
   };
 
   return [getTestHistory];
-};
-
-export const useDeleteTestHistory = () => {
-  const dispatch = useAppDispatch();
-
-  const deleteTestHistory = async (testId) => {
-    const response = await apiClient.delete(`/tests/${testId}`);
-
-    if (response?.data) {
-      dispatch(removeTestById(testId));
-    }
-
-    return response;
-  };
-
-  return useApiRequest(deleteTestHistory);
-};
-
-export const useDeleteDosageHistory = () => {
-  const dispatch = useAppDispatch();
-
-  const deleteDosageHistory = async (dosageId, recordId) => {
-    const response = await apiClient.delete(`/dosage/${dosageId}`);
-
-    dispatch(removeDosageById(recordId));
-
-    dispatch(chartRemoveDosageById(recordId));
-
-    return response;
-  };
-
-  return useApiRequest(deleteDosageHistory);
-};
-
-export const useElements = () => {
-  const { isFresh } = useAudience();
-
-  // active key does not exist on things we want to return but things we want to exclude is set to false
-
-  const elements = useAppSelector(selectElements)?.filter(
-    (element) => element?.id !== "678150bf2366748b5678e24c" // Exclude Specific Gravity
-  );
-
-  if (isFresh) {
-    return elements.filter((element) => element?.freshApplicable);
-  }
-
-  return elements.filter((element) => !element?.notReefApplicable);
-};
-
-export const usePostTestImportCsv = () => {
-  const fn = async (payload) => {
-    const response = await apiClient.post(
-      `/tests/importTestResultCsv`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    return response.data?.data;
-  };
-
-  return [fn];
 };

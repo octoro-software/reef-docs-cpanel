@@ -6,7 +6,6 @@ import { Heading } from "../Heading/Heading";
 import { Text } from "../Text/Text";
 import { Icon } from "../Icon/Icon";
 import { BLACK } from "../../constants";
-import { AppImage } from "../AppImage/AppImage";
 
 export const ModalHeader = ({
   image = false,
@@ -20,13 +19,7 @@ export const ModalHeader = ({
 }) => {
   return (
     <Grid gap={8} justifyContent="center" alignItems="center">
-      {image ? (
-        <AppImage
-          source={{ uri: image }}
-          style={styles.image}
-          resizeMode="cover"
-        />
-      ) : icon ? (
+      {icon ? (
         <View
           style={[styles.imageWrapper, styles.iconWrapper, iconWrapperStyle]}
         >
