@@ -29,8 +29,29 @@ export const SettingsScreen: React.FC = () => {
           Settings
         </Heading>
 
-        <Grid direction="row" style={{ marginTop: 32 }}>
+        <Grid direction="row" style={{ marginTop: 32 }} gap={16}>
           <GridItem
+            style={{
+              backgroundColor: "rgba(16, 24, 44, 0.95)",
+              height: height - 32,
+              minWidth: 100,
+            }}
+          >
+            <Grid direction="column">
+              {menu.map((item) => (
+                <Grid
+                  direction="row"
+                  gap={8}
+                  key={item.definition}
+                  style={{ marginBottom: 20, padding: 16 }}
+                >
+                  <Text style={{ color: WHITE }}>{item.label}</Text>
+                </Grid>
+              ))}
+            </Grid>
+          </GridItem>
+          <GridItem
+            flex={1}
             style={{
               backgroundColor: "rgba(16, 24, 44, 0.95)",
               height: height - 32,
