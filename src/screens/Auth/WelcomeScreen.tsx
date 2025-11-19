@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-native";
 import { StyleSheet } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import branch from "react-native-branch";
 
 import { Button, Grid, Heading, ScreenWrapper, Text } from "../../components";
 
 import { Logo } from "../../components/Logo/Logo";
-import { sendEvent } from "../../utility/analytics";
 
 import { LOGIN_PATH, REEF_DOCS_GREY, REGISTER_PATH } from "../../constants";
 
@@ -16,58 +13,6 @@ export const WelcomeScreen: React.FC = () => {
 
   const handleNavigate = async (path) => {
     await navigate(path);
-  };
-
-  useEffect(() => {
-    // Handle cold start
-    branch.getLatestReferringParams().then(({ params, error }) => {
-      if (error) {
-        return;
-      }
-
-      const campaign = params?.["~campaign"];
-      const channel = params?.["~channel"];
-
-      if (campaign && channel) {
-        registerInstallEvent(campaign, channel);
-      }
-    });
-
-    // Handle warm start
-    const unsubscribe = branch.subscribe(({ error, params, uri }) => {
-      if (error) {
-        return;
-      }
-
-      const campaign = params?.["~campaign"];
-      const channel = params?.["~channel"];
-
-      if (campaign && channel) {
-        registerInstallEvent(campaign, channel);
-      }
-    });
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [navigate]);
-
-  const registerInstallEvent = async (campaignId, channel) => {
-    await AsyncStorage.setItem(
-      "campaign",
-      JSON.stringify({ campaignId, channel })
-    );
-
-    sendEvent(
-      "APP_INSTALL_VIA_CAMPAIGN",
-      {
-        campaignId,
-        channel,
-      },
-      true
-    );
   };
 
   const welcomeText = `Join Us & Simplify Your Aquarium Management with Aqua Docs!`;

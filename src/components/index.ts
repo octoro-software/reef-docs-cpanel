@@ -13,8 +13,6 @@ export * from "./Modal/ModalComposition";
 export * from "./Modal/Modal";
 export * from "./ModalHeader/ModalHeader";
 export * from "./Form/Select/Select";
-export * from "./RichText/RichText";
 export * from "./AppImage/AppImage";
-export * from "./VideoPlayer/VideoPlayer";
 export * from "./Form/DateSelect/DateSelect";
 export * from "./LoadingSpinner/LoadingSpinner";

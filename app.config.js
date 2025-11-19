@@ -133,7 +133,6 @@ export default {
       SENTRY_SEND_DEFAULT_PII: process.env.SENTRY_SEND_DEFAULT_PII,
       APP_CHECK_DEBUG_TOKEN: process.env.APP_CHECK_DEBUG_TOKEN,
       IS_FRESH: process.env.IS_FRESH,
-      BRANCH_IO_KEY: process.env.BRANCH_IO_KEY,
       SENTRY_DSN: process.env.SENTRY_DSN,
       MEDIA_SERVICE_URL: process.env.MEDIA_SERVICE_URL,
       CDN_VIDEO_BASE_URL: process.env.CDN_VIDEO_BASE_URL,
@@ -143,16 +142,9 @@ export default {
     },
     owner: "octoro",
     plugins: [
-      "expo-video",
       [
         "react-native-bootsplash",
         { assetsDir: IS_DEV ? "assets/dev/bootsplash" : "assets/bootsplash" },
-      ],
-      [
-        "@config-plugins/react-native-branch",
-        {
-          apiKey: process.env.BRANCH_IO_KEY,
-        },
       ],
       "@react-native-firebase/app",
       "expo-secure-store",
@@ -190,19 +182,7 @@ export default {
           ],
         },
       ],
-      [
-        "react-native-share",
-        {
-          ios: ["fb", "instagram", "twitter", "tiktoksharesdk"],
-          android: [
-            "com.facebook.katana",
-            "com.instagram.android",
-            "com.twitter.android",
-            "com.zhiliaoapp.musically",
-          ],
-          enableBase64ShareAndroid: true,
-        },
-      ],
+
       [
         "expo-build-properties",
         {
@@ -222,26 +202,13 @@ export default {
           },
         },
       ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          merchantIdentifier: "Aqua Docs",
-          enableGooglePay: true,
-        },
-      ],
+
       [
         "@sentry/react-native/expo",
         {
           url: "https://sentry.io/",
           project: "aqua-docs",
           organization: "octoro-iu",
-        },
-      ],
-      [
-        "expo-tracking-transparency",
-        {
-          userTrackingPermission:
-            "This identifier will be used to deliver personalized ads and information to you.",
         },
       ],
     ],

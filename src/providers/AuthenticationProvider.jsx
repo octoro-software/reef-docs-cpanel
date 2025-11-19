@@ -4,7 +4,6 @@ import * as SecureStore from "expo-secure-store";
 
 import { AuthStack } from "../navigation/AuthStack";
 import { useGetUserProfile } from "../hooks/useAuth";
-import { eventBus } from "./eventBus";
 import { useAppDispatch } from "../hooks/useRedux";
 import { clearUser } from "../store/slices/globalSlice";
 import {
@@ -51,14 +50,6 @@ export const AuthenticationProvider = ({ children }) => {
       await getUserProfile();
     };
     init();
-  }, []);
-
-  useEffect(() => {
-    try {
-      eventBus.on("forceLogout", () => {
-        handleClearDown();
-      });
-    } catch (error) {}
   }, []);
 
   if (loading) return <DataLoading />;

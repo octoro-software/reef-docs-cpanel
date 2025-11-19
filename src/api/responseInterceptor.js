@@ -1,8 +1,6 @@
 // apiClient.ts
 import axios from "axios";
 import { Platform } from "react-native";
-import { getApp } from "@react-native-firebase/app";
-import appCheck from "@react-native-firebase/app-check";
 
 import { API_BASE_URL } from "../constants";
 import {
@@ -11,7 +9,6 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "./authService";
-import { eventBus } from "../providers/eventBus";
 import { logError } from "./errorHandler";
 
 // Main client (has interceptors elsewhere)
@@ -123,7 +120,6 @@ export const handleResponseError = async (error) => {
 
       // For real 401/400 refresh failures, force logout.
       try {
-        eventBus.emit("forceLogout");
       } catch {}
       return Promise.reject(refreshError);
     }

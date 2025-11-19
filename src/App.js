@@ -3,8 +3,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SystemBars } from "react-native-edge-to-edge";
 import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
-import appCheck from "@react-native-firebase/app-check";
-import { getApp } from "@react-native-firebase/app";
 
 import { AuthenticationProvider } from "./providers/AuthenticationProvider";
 
@@ -14,14 +12,11 @@ import { Layout } from "./screens/Layout/Layout";
 import { MainStack } from "./navigation/MainStack";
 import { ModalProvider } from "./providers/ModalProvider";
 import { ReduxProvider } from "./providers/ReduxProvider";
-import { DataInitProvider } from "./providers/DataInitProvider";
 import { UpdateProvider } from "./providers/UpdateProvider";
 import { NetworkProvider } from "./providers/NetworkProvider";
 import { ForceUpgradeProvider } from "./providers/ForceUpgradeProvider";
-import { ReactNativeFirebaseAppCheckProvider } from "@react-native-firebase/app-check";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { WHITE } from "./constants";
-import { getAppEnv } from "./utility/environment";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { PushNotificationProvider } from "./providers/PushNotificationProvider";
@@ -97,15 +92,13 @@ export default Sentry.wrap(function App() {
                     <AuthenticationProvider>
                       <NetworkProvider>
                         <ModalProvider>
-                          <DataInitProvider>
-                            <PushNotificationProvider>
-                              <ThemeProvider>
-                                <Layout>
-                                  <MainStack />
-                                </Layout>
-                              </ThemeProvider>
-                            </PushNotificationProvider>
-                          </DataInitProvider>
+                          <PushNotificationProvider>
+                            <ThemeProvider>
+                              <Layout>
+                                <MainStack />
+                              </Layout>
+                            </ThemeProvider>
+                          </PushNotificationProvider>
                         </ModalProvider>
                       </NetworkProvider>
                     </AuthenticationProvider>

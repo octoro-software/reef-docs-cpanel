@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-native";
 import { hasPreviouslyLoggedIn } from "../utility/auth";
 
 import {
-  RegisterScreen,
   LoginScreen,
   WelcomeScreen,
   ConfirmEmailScreen,
@@ -12,13 +11,7 @@ import {
   TankScreen,
 } from "../screens";
 
-import {
-  FORGOT_PASSWORD_CHANGE_PATH,
-  FORGOT_PASSWORD_CONFIRM_PATH,
-  FORGOT_PASSWORD_PATH,
-  LOGIN_PATH,
-  REGISTER_PATH,
-} from "../constants";
+import { LOGIN_PATH } from "../constants";
 import BootSplash from "react-native-bootsplash";
 export const AuthStack = ({ isOnBoarding }) => {
   const [hasLoggedInBefore, setHasLoggedInBefore] = useState(false);

@@ -1,9 +1,7 @@
 import React, { createContext, RefObject, useRef } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import { IOScrollView } from "react-native-intersection-observer";
 
 import { getAppDimensions } from "../../utility/dimensions";
-import { useFooterHeight } from "../../hooks/useFooter";
 import { APP_HEADER_HEIGHT } from "../../constants";
 
 const ScrollRefContext = createContext<RefObject<ScrollView> | null>(null);
@@ -39,8 +37,6 @@ export const ScreenWrapper: React.FC<{
 
   const screenHeight = height - insets;
 
-  const footerHeight = useFooterHeight();
-
   if (!scrollEnabled) {
     return (
       <View
@@ -57,7 +53,7 @@ export const ScreenWrapper: React.FC<{
 
   return (
     <SafeAreaView>
-      <IOScrollView
+      <ScrollView
         ref={scrollRef}
         keyboardShouldPersistTaps={persistTaps ? "handled" : "never"}
         scrollEnabled={scrollEnabled}
@@ -70,14 +66,11 @@ export const ScreenWrapper: React.FC<{
           },
           style,
         ]}
-        contentContainerStyle={{
-          paddingBottom: (footerHeight + 60 + APP_HEADER_HEIGHT) * 2,
-        }}
       >
         <ScrollRefContext.Provider value={scrollRef}>
           {children}
         </ScrollRefContext.Provider>
-      </IOScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
