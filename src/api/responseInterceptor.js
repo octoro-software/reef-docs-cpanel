@@ -30,8 +30,8 @@ const authClient = axios.create({
 async function getAppCheckHeader() {
   if (Platform.OS === "ios" && __DEV__) return "";
   try {
-    const { token } = await getAppCheckToken(appCheck(getApp()));
-    return token || "";
+    // const { token } = await getAppCheckToken(appCheck(getApp()));
+    // return token || "";
   } catch (e) {
     // Don’t block refresh just because App Check couldn’t fetch in dev
     return "";
@@ -46,7 +46,7 @@ async function doRefresh() {
     throw new Error("Missing tokens before refresh");
   }
 
-  const appCheckToken = await getAppCheckHeader();
+  // const appCheckToken = await getAppCheckHeader();
 
   const res = await authClient.post(
     "/auth/refreshToken",
@@ -54,7 +54,7 @@ async function doRefresh() {
     {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
-        "X-Firebase-AppCheck": appCheckToken,
+        // "X-Firebase-AppCheck": appCheckToken,
       },
     }
   );

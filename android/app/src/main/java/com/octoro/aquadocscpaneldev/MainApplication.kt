@@ -1,4 +1,4 @@
-package com.octoro.aquadocsdev
+package com.octoro.aquadocscpaneldev
 import com.facebook.react.common.assets.ReactFontManager
 
 import android.app.Application

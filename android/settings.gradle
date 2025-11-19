@@ -31,7 +31,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-rootProject.name = 'Aqua Docs Dev'
+rootProject.name = 'Aqua Docs cPanel Dev'
 
 expoAutolinking.useExpoVersionCatalog()
 

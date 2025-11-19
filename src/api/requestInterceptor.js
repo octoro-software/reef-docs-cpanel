@@ -12,13 +12,13 @@ export const attachAuthToken = async (config) => {
 
   const audience = (await AsyncStorage.getItem("audience")) ?? "reef-docs";
 
-  const { token: appCheckToken } = Platform.OS === 'ios' && __DEV__ ? {token: ''}:  await getToken(appCheck(getApp()));
+  // const { token: appCheckToken } = Platform.OS === 'ios' && __DEV__ ? {token: ''}:  await getToken(appCheck(getApp()));
 
   const usServerUrl = await getBaseUrl();
 
   config.baseURL = usServerUrl;
 
-  config.headers["X-Firebase-AppCheck"] = appCheckToken;
+  // config.headers["X-Firebase-AppCheck"] = appCheckToken;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

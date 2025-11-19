@@ -19,9 +19,6 @@ import {
   LOGIN_PATH,
   REGISTER_PATH,
 } from "../constants";
-import { ForgotPasswordScreen } from "../screens/Auth/ForgotPasswordScreen";
-import { ConfirmPasswordResetTokenScreen } from "../screens/Auth/ConfirmPasswordResetTokenScreen";
-import { PasswordResetScreen } from "../screens/Auth/PasswordResetScreen";
 import BootSplash from "react-native-bootsplash";
 export const AuthStack = ({ isOnBoarding }) => {
   const [hasLoggedInBefore, setHasLoggedInBefore] = useState(false);
@@ -53,16 +50,6 @@ export const AuthStack = ({ isOnBoarding }) => {
     <Routes>
       <Route path="/" element={getStartingScreen()} />
       <Route path={LOGIN_PATH} element={<LoginScreen />} />
-      <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPasswordScreen />} />
-      <Route
-        path={FORGOT_PASSWORD_CONFIRM_PATH}
-        element={<ConfirmPasswordResetTokenScreen />}
-      />
-      <Route
-        path={FORGOT_PASSWORD_CHANGE_PATH}
-        element={<PasswordResetScreen />}
-      />
-      <Route path={REGISTER_PATH} element={<RegisterScreen />} />
     </Routes>
   );
 };

@@ -16,7 +16,6 @@ import { TankModal } from "../elements/Modals/TankModal/TankModal";
 import { TestHistoryCsvImportModal } from "../elements/Modals/TestHistoryCsvImportModal/TestHistoryCsvImportModal";
 import { TestSettingsModal } from "../elements/Modals/TestSettingsModal/TestSettingsModal";
 import { UserPostShareTankModal } from "../elements/Modals/UserPostShareTankModal/UserPostShareTankModal";
-import { UserPostShareTestModal } from "../elements/Modals/UserPostShareTestModal/UserPostShareTestModal";
 import { UserSettingsModal } from "../elements/Modals/UserSettingsModal/UserSettingsModal";
 import { LiveStockProfileUserExperiencesModal } from "../elements/Modals/LiveStockProfileUserExperiencesModal/LiveStockProfileUserExperiencesModal";
 import { LiveStockProfileUserVideosModal } from "../elements/Modals/LiveStockProfileUserVideosModal/LiveStockProfileUserVideosModal";
@@ -76,7 +75,6 @@ export const ModalRegistry = {
   friendOrFoeHelpModal: FriendOrFoeHelpModal,
   engagementPointsHelpModal: EngagementPointsHelpModal,
   userPostShareTankModal: UserPostShareTankModal,
-  userPostShareTestModal: UserPostShareTestModal,
   testSettingsModal: TestSettingsModal,
   liveStockProfileUserExperienceModal: LiveStockProfileUserExperiencesModal,
   liveStockProfileUserVideosModal: LiveStockProfileUserVideosModal,

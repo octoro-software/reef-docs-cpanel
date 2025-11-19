@@ -89,13 +89,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.octoro.aquadocsdev'
+    namespace 'com.octoro.aquadocscpaneldev'
     defaultConfig {
-        applicationId 'com.octoro.aquadocsdev'
+        applicationId 'com.octoro.aquadocscpaneldev'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.5"
+        versionName "1.0.0"
     }
     signingConfigs {
         debug {

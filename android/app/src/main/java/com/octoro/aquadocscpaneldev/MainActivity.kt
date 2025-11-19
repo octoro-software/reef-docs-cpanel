@@ -1,4 +1,4 @@
-package com.octoro.aquadocsdev
+package com.octoro.aquadocscpaneldev
 import com.zoontek.rnbootsplash.RNBootSplash
 
 import android.os.Build

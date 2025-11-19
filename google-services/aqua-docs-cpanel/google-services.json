@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "747659563246",
-    "project_id": "aqua-docs",
-    "storage_bucket": "aqua-docs.firebasestorage.app"
+    "project_number": "1097231769182",
+    "project_id": "aqua-docs-cpanel",
+    "storage_bucket": "aqua-docs-cpanel.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:747659563246:android:dced83892cb098c1bee3ff",
+        "mobilesdk_app_id": "1:1097231769182:android:e68ed02d0afd7fc731decf",
         "android_client_info": {
-          "package_name": "com.octoro.aquadocs"
+          "package_name": "com.octoro.aquadocscpanel"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDPfCnG6__1Y4hkWdrUDg8N3Xf4iD6peEU"
+          "current_key": "AIzaSyCrZRW9jKmTTSngKrf2GTZcZ_BfuKqBXn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097231769182:android:8e8fe9c1cc837bcc31decf",
+        "android_client_info": {
+          "package_name": "com.octoro.aquadocscpaneldev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrZRW9jKmTTSngKrf2GTZcZ_BfuKqBXn0"
         }
       ],
       "services": {
