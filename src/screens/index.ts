@@ -1,4 +1,3 @@
 export * from "./Home";
 export * from "./Auth/LoginScreen";
 export * from "./Auth/WelcomeScreen";
-export * from "./Auth/ConfirmEmailScreen";

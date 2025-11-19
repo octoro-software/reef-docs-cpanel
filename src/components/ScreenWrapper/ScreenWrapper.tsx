@@ -2,7 +2,6 @@ import React, { createContext, RefObject, useRef } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
 import { getAppDimensions } from "../../utility/dimensions";
-import { APP_HEADER_HEIGHT } from "../../constants";
 
 const ScrollRefContext = createContext<RefObject<ScrollView> | null>(null);
 
