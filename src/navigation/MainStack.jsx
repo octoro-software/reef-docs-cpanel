@@ -9,6 +9,7 @@ import {
   selectSocialFullScreen,
   setWheelMenuOpen,
 } from "../store/slices/globalSlice";
+import { ElementScreen } from "../screens/ElementScreen";
 
 export const MainStack = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export const MainStack = () => {
   return (
     <Routes>
       <Route index path={"/"} element={<HomeScreen />} />
+      <Route path={"/element"} element={<ElementScreen />} />
     </Routes>
   );
 };

@@ -35,18 +35,16 @@ export const Layout: React.FC<{ children: React.ReactElement }> = ({
   }, [storeSignupFlow]);
 
   return (
-    <SafeAreaView>
-      <View style={{ height: "100%" }}>
-        <ScreenWrapper
-          key={location.pathname}
-          scrollEnabled={true}
-          style={styles.screen}
-          screenPadding={16}
-        >
-          {children}
-        </ScreenWrapper>
-      </View>
-    </SafeAreaView>
+    <View style={{ height: "100%" }}>
+      <ScreenWrapper
+        key={location.pathname}
+        scrollEnabled={true}
+        style={styles.screen}
+        screenPadding={0}
+      >
+        {children}
+      </ScreenWrapper>
+    </View>
   );
 };
 
