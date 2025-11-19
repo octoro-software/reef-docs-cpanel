@@ -10,6 +10,7 @@ import {
   setWheelMenuOpen,
 } from "../store/slices/globalSlice";
 import { ElementScreen } from "../screens/ElementScreen";
+import { SettingsScreen } from "../screens/Settings";
 
 export const MainStack = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export const MainStack = () => {
     <Routes>
       <Route index path={"/"} element={<HomeScreen />} />
       <Route path={"/element"} element={<ElementScreen />} />
+      <Route path={"/settings"} element={<SettingsScreen />} />
     </Routes>
   );
 };

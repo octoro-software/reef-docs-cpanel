@@ -33,7 +33,7 @@ export const ScreenWrapper: React.FC<{
   persistTaps = false,
   screenPadding = 16,
 }) => {
-  const { height } = getAppDimensions();
+  const { height, width } = getAppDimensions();
 
   const scrollRef = useRef(null);
 

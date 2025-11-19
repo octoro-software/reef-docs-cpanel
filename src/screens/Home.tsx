@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { SystemBars } from "react-native-edge-to-edge";
 import { getAppDimensions } from "../utility/dimensions";
-import { Grid, GridItem, Heading, Text } from "../components";
+import { Grid, GridItem, Heading, Icon, Text } from "../components";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LineChart } from "../components/LineChart";
 import { WHITE } from "../constants";
 import { useNavigate } from "react-router-native";
-
-const { height } = getAppDimensions();
+const { height, width } = getAppDimensions();
 
 const initialData = [
   {
@@ -118,66 +117,177 @@ export const HomeScreen: React.FC = () => {
         style={styles.bgGradient}
       >
         <View style={styles.glow} />
-        <Grid direction="column" gap={16}>
-          {Array.from({ length: Math.ceil(cards.length / 3) }).map(
-            (_, rowIdx) => (
-              <Grid direction="row" gap={16} key={rowIdx}>
-                {cards.slice(rowIdx * 3, rowIdx * 3 + 3).map((item, index) => {
-                  const cardIdx = rowIdx * 3 + index;
-                  return (
-                    <Card
-                      key={cardIdx}
-                      onDragStart={() => onDragStart(cardIdx)}
-                      onDragEnter={() => onDragEnter(cardIdx)}
-                      onDragEnd={onDragEnd}
-                      handleOnPress={() =>
-                        navigate("/element", {
-                          state: {
-                            ...item,
-                          },
-                        })
-                      }
-                    >
-                      <Heading
-                        style={{ color: WHITE }}
-                        variant={5}
-                        weight="semiBold"
-                      >
-                        {item.label}
-                      </Heading>
-                      <Grid direction="row" justifyContent="space-between">
-                        <GridItem>
-                          <Text
-                            style={{
-                              color: "white",
-                              fontSize: 32,
-                              fontWeight: "thin",
-                            }}
-                          >
-                            {String(item.value)}
-                          </Text>
-                          <Text
-                            style={{ color: item.change < 0 ? "red" : "green" }}
-                          >
-                            {(item.change < 0 ? "" : "+") + String(item.change)}
-                          </Text>
-                        </GridItem>
-                        <GridItem>
-                          <LineChart
-                            data={item.history}
-                            width={120}
-                            height={48}
-                            color={item.change < 0 ? "#ef4444" : "#60a5fa"}
-                          />
-                        </GridItem>
-                      </Grid>
-                    </Card>
-                  );
-                })}
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <View style={{ width: width - 40 }}>
+            <Grid direction="column" gap={16}>
+              <Grid direction="row" justifyContent="space-between">
+                <Heading
+                  variant={5}
+                  weight="semiBold"
+                  style={{ color: "white" }}
+                >
+                  Marty's Reef
+                </Heading>
+                <TouchableOpacity onPress={() => navigate("/settings")}>
+                  <Icon name="settings" width={24} height={24} fill={WHITE} />
+                </TouchableOpacity>
               </Grid>
-            )
-          )}
-        </Grid>
+
+              {Array.from({ length: Math.ceil(cards.length / 3) }).map(
+                (_, rowIdx) => (
+                  <Grid direction="row" gap={16} key={rowIdx}>
+                    {cards
+                      .slice(rowIdx * 3, rowIdx * 3 + 3)
+                      .map((item, index) => {
+                        const cardIdx = rowIdx * 3 + index;
+                        return (
+                          <Card
+                            key={cardIdx}
+                            onDragStart={() => onDragStart(cardIdx)}
+                            onDragEnter={() => onDragEnter(cardIdx)}
+                            onDragEnd={onDragEnd}
+                            handleOnPress={() =>
+                              navigate("/element", {
+                                state: {
+                                  ...item,
+                                },
+                              })
+                            }
+                          >
+                            <Heading
+                              style={{ color: WHITE }}
+                              variant={5}
+                              weight="semiBold"
+                            >
+                              {item.label}
+                            </Heading>
+                            <Grid
+                              direction="row"
+                              justifyContent="space-between"
+                            >
+                              <GridItem>
+                                <Text
+                                  style={{
+                                    color: "white",
+                                    fontSize: 32,
+                                    fontWeight: "thin",
+                                  }}
+                                >
+                                  {String(item.value)}
+                                </Text>
+                                <Text
+                                  style={{
+                                    color: item.change < 0 ? "red" : "green",
+                                  }}
+                                >
+                                  {(item.change < 0 ? "" : "+") +
+                                    String(item.change)}
+                                </Text>
+                              </GridItem>
+                              <GridItem>
+                                <LineChart
+                                  data={item.history}
+                                  width={120}
+                                  height={48}
+                                  color={
+                                    item.change < 0 ? "#ef4444" : "#60a5fa"
+                                  }
+                                />
+                              </GridItem>
+                            </Grid>
+                          </Card>
+                        );
+                      })}
+                  </Grid>
+                )
+              )}
+            </Grid>
+          </View>
+          <View style={{ width: width - 40 }}>
+            <Grid direction="column" gap={16}>
+              <Grid direction="row" justifyContent="space-between">
+                <Heading
+                  variant={5}
+                  weight="semiBold"
+                  style={{ color: "white" }}
+                >
+                  Marty's Reef
+                </Heading>
+
+                <Icon name="settings" width={24} height={24} fill={WHITE} />
+              </Grid>
+
+              {Array.from({ length: Math.ceil(cards.length / 3) }).map(
+                (_, rowIdx) => (
+                  <Grid direction="row" gap={16} key={rowIdx}>
+                    {cards
+                      .slice(rowIdx * 3, rowIdx * 3 + 3)
+                      .map((item, index) => {
+                        const cardIdx = rowIdx * 3 + index;
+                        return (
+                          <Card
+                            key={cardIdx}
+                            onDragStart={() => onDragStart(cardIdx)}
+                            onDragEnter={() => onDragEnter(cardIdx)}
+                            onDragEnd={onDragEnd}
+                            handleOnPress={() =>
+                              navigate("/element", {
+                                state: {
+                                  ...item,
+                                },
+                              })
+                            }
+                          >
+                            <Heading
+                              style={{ color: WHITE }}
+                              variant={5}
+                              weight="semiBold"
+                            >
+                              {item.label}
+                            </Heading>
+                            <Grid
+                              direction="row"
+                              justifyContent="space-between"
+                            >
+                              <GridItem>
+                                <Text
+                                  style={{
+                                    color: "white",
+                                    fontSize: 32,
+                                    fontWeight: "thin",
+                                  }}
+                                >
+                                  {String(item.value)}
+                                </Text>
+                                <Text
+                                  style={{
+                                    color: item.change < 0 ? "red" : "green",
+                                  }}
+                                >
+                                  {(item.change < 0 ? "" : "+") +
+                                    String(item.change)}
+                                </Text>
+                              </GridItem>
+                              <GridItem>
+                                <LineChart
+                                  data={item.history}
+                                  width={120}
+                                  height={48}
+                                  color={
+                                    item.change < 0 ? "#ef4444" : "#60a5fa"
+                                  }
+                                />
+                              </GridItem>
+                            </Grid>
+                          </Card>
+                        );
+                      })}
+                  </Grid>
+                )
+              )}
+            </Grid>
+          </View>
+        </ScrollView>
       </LinearGradient>
     </View>
   );

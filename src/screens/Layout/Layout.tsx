@@ -38,7 +38,7 @@ export const Layout: React.FC<{ children: React.ReactElement }> = ({
     <View style={{ height: "100%" }}>
       <ScreenWrapper
         key={location.pathname}
-        scrollEnabled={true}
+        scrollEnabled={false}
         style={styles.screen}
         screenPadding={0}
       >
