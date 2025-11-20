@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Image,
   ScrollView,
@@ -8,17 +7,21 @@ import {
   View,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+
 import { useAppSelector } from "../../hooks/useRedux";
+import { useApexEnabled, useAutoApexFeed } from "../../hooks/useApex";
+
+import { selectApexFeed } from "../../store/slices/userConfigSlice";
+
 import { Grid, GridItem } from "../Grid/Grid";
 import { Heading } from "../Heading/Heading";
-import { WHITE } from "../../constants";
 import { Text } from "../Text/Text";
 
 import apexLogo from "./apex.png";
-import { useApexEnabled, useAutoApexFeed } from "../../hooks/useApex";
-import { selectApexFeed } from "../../store/slices/userConfigSlice";
 
-export const Apex: React.FC = () => {
+import { WHITE } from "../../constants";
+
+export const ApexDashboardPanel: React.FC = () => {
   const apexEnabled = useApexEnabled();
 
   useAutoApexFeed();
@@ -27,19 +30,19 @@ export const Apex: React.FC = () => {
 
   if (!apexEnabled) return <></>;
 
-  const cards = apexData?.status?.outlets?.outlet?.map((outlet) => {
-    return {
-      label: outlet.name,
-      value: outlet.state,
-    };
-  });
-
-  // Helper to chunk array into rows of 3
+  const cards =
+    apexData?.status?.outlets?.outlet?.map((outlet) => {
+      return {
+        label: outlet.name,
+        value: outlet.state,
+      };
+    }) ?? [];
 
   return (
     <ScrollView
       nestedScrollEnabled={true}
       contentContainerStyle={{ paddingBottom: 32 }}
+      showsVerticalScrollIndicator={false}
     >
       {Array.from({ length: Math.ceil(cards.length / 3) }).map((_, rowIdx) => (
         <Grid

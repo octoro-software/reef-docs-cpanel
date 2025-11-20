@@ -2,15 +2,14 @@ import React, { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-native";
 import { BackHandler } from "react-native";
 
-import { HomeScreen } from "../screens";
-
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import {
   selectSocialFullScreen,
   setWheelMenuOpen,
 } from "../store/slices/globalSlice";
-import { ElementScreen } from "../screens/ElementScreen";
-import { SettingsScreen } from "../screens/Settings";
+import { DashboardScreen } from "../screens/DashboardScreen/DashboardScreen";
+import { ElementGraphScreen } from "../screens/ElementGraphScreen/ElementGraphScreen";
+import { PanelSettingsScreen } from "../screens/PanelSettingsScreen/PanelSettingsScreen";
 
 export const MainStack = () => {
   const navigate = useNavigate();
@@ -46,9 +45,9 @@ export const MainStack = () => {
 
   return (
     <Routes>
-      <Route index path={"/"} element={<HomeScreen />} />
-      <Route path={"/element"} element={<ElementScreen />} />
-      <Route path={"/settings"} element={<SettingsScreen />} />
+      <Route index path={"/"} element={<DashboardScreen />} />
+      <Route path={"/element"} element={<ElementGraphScreen />} />
+      <Route path={"/settings"} element={<PanelSettingsScreen />} />
     </Routes>
   );
 };

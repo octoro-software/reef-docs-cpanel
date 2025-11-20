@@ -1,13 +1,9 @@
 import axios from "axios";
-import {
-  selectApexFeed,
-  selectRedSeaFeed,
-  setApexFeed,
-} from "../store/slices/userConfigSlice";
+import { selectApexFeed, setApexFeed } from "../store/slices/userConfigSlice";
 import { useAppDispatch, useAppSelector } from "./useRedux";
-import { setRedSeaData } from "../store/slices/redSeaSlice";
 import { useEffect } from "react";
 import { XMLParser } from "fast-xml-parser";
+import { setApexSyncing } from "../store/slices/apexSlice";
 
 export const useApexEnabled = () => {
   const apexFeed = useAppSelector(selectApexFeed);
@@ -24,6 +20,8 @@ export const useGetApexStatus = () => {
   const apexFeed = useAppSelector(selectApexFeed);
 
   const fn = async () => {
+    dispatch(setApexSyncing(true));
+
     const response = await axios
       .get(`http://${apexFeed.ipAddress}/status.xml`)
       .catch((error) => {
@@ -41,6 +39,8 @@ export const useGetApexStatus = () => {
         status: json?.status,
       })
     );
+
+    dispatch(setApexSyncing(false));
   };
 
   return [fn];
@@ -55,8 +55,6 @@ export const useAutoApexFeed = () => {
 
   const refreshTimeRaw = apexFeed?.refreshTime;
   const refreshTime = refreshTimeRaw ? parseFloat(refreshTimeRaw) : 5;
-
-  console.log({ refreshTime, apexEnabled });
 
   useEffect(() => {
     if (!refreshTime || !apexEnabled) {

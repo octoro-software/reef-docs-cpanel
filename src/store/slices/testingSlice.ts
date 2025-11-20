@@ -6,6 +6,7 @@ const initialState = {
     selectedMonth: null,
     monthsWithTests: [],
   },
+  syncing: false,
   currentStanding: {},
   currentStandingStability: {},
   testSelectionIndex: [],
@@ -25,6 +26,10 @@ const testingSlice = createSlice({
   reducers: {
     setChartData: (state, action) => {
       state.chart.chartData = action.payload;
+    },
+
+    setAquaDocsFeedSyncing: (state, action) => {
+      state.syncing = action.payload;
     },
 
     setDosageData: (state, action) => {
@@ -84,6 +89,7 @@ export const {
   setDosageData,
   chartRemoveDosageById,
   setCurrentStandingStability,
+  setAquaDocsFeedSyncing,
 } = testingSlice.actions;
 
 export default testingSlice.reducer;
@@ -104,3 +110,5 @@ export const selectElementViewData = (state) => state.testing.elementViewData;
 export const selectChartData = (state) => state.testing.chart.chartData;
 
 export const selectDosageData = (state) => state.testing.chart.dosageData;
+
+export const selectAquaDocsFeedSyncing = (state) => state.testing.syncing;
