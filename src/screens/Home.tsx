@@ -8,82 +8,40 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LineChart } from "../components/LineChart";
 import { WHITE } from "../constants";
 import { useNavigate } from "react-router-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTestHistoryCurrentStanding } from "../hooks/useTestHistory";
+import { useAppSelector } from "../hooks/useRedux";
+import {
+  selectTestCurrentStanding,
+  selectTestCurrentStandingStability,
+} from "../store/slices/testingSlice";
+import { selectActiveTankName } from "../store/slices/userConfigSlice";
+import { RedSeaReefMat } from "../components/RedSeaReefMat/RedSeaReefMat";
 const { height, width } = getAppDimensions();
 
-const initialData = [
-  {
-    label: "Calcium",
-    value: 562,
-    change: -20,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e24f",
-  },
-  {
-    label: "Magnesium",
-    value: 1542,
-    change: +42,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e252",
-  },
-  {
-    label: "Alkalinity",
-    value: 8.6,
-    change: -0.2,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e246",
-  },
-  {
-    label: "Nitrate",
-    value: 22.1,
-    change: -0.2,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e268",
-  },
-  {
-    label: "Phosphate",
-    value: 0.1,
-    change: +0.5,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e26c",
-  },
-  {
-    label: "Salinity",
-    value: 1.026,
-    change: 0,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e24b",
-  },
-  {
-    label: "pH",
-    value: 7.8,
-    change: 0,
-    history: [562, 540, 580, 570, 590, 600],
-    elementId: "678150bf2366748b5678e247",
-  },
-  {
-    label: "Temperature",
-    value: 22.8,
-    change: -1.5,
-    history: [562, 540, 580, 570, 590, 25],
-    elementId: "6791129bac607b3f716e0300",
-  },
-  {
-    label: "ORP",
-    value: 22.8,
-    change: -1.5,
-    history: [562, 540, 580, 570, 590, 25],
-  },
-];
-
 export const HomeScreen: React.FC = () => {
-  const [cards, setCards] = useState(initialData);
   const draggingIdx = useRef<number | null>(null);
   const dragOverIdx = useRef<number | null>(null);
+
+  const tankName = useAppSelector(selectActiveTankName);
+
+  const [getCurrentStanding] = useTestHistoryCurrentStanding();
+
+  const currentStanding = useAppSelector(selectTestCurrentStanding);
+
+  const currentStandingStability = useAppSelector(
+    selectTestCurrentStandingStability
+  );
+
+  const cards = currentStanding?.data ?? [];
 
   const navigate = useNavigate();
 
   useEffect(() => {
     SystemBars.setHidden(true);
+
+    getCurrentStanding();
+    getCurrentStanding(true);
   }, []);
 
   // Drag logic scaffold
@@ -102,7 +60,6 @@ export const HomeScreen: React.FC = () => {
       const newCards = [...cards];
       const [removed] = newCards.splice(draggingIdx.current, 1);
       newCards.splice(dragOverIdx.current, 0, removed);
-      setCards(newCards);
     }
     draggingIdx.current = null;
     dragOverIdx.current = null;
@@ -116,7 +73,6 @@ export const HomeScreen: React.FC = () => {
         end={{ x: 1, y: 1 }}
         style={styles.bgGradient}
       >
-        <View style={styles.glow} />
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={{ width: width - 40 }}>
             <Grid direction="column" gap={16}>
@@ -126,7 +82,7 @@ export const HomeScreen: React.FC = () => {
                   weight="semiBold"
                   style={{ color: "white" }}
                 >
-                  Marty's Reef
+                  {tankName}
                 </Heading>
                 <TouchableOpacity onPress={() => navigate("/settings")}>
                   <Icon name="settings" width={24} height={24} fill={WHITE} />
@@ -140,6 +96,11 @@ export const HomeScreen: React.FC = () => {
                       .slice(rowIdx * 3, rowIdx * 3 + 3)
                       .map((item, index) => {
                         const cardIdx = rowIdx * 3 + index;
+
+                        const change = parseFloat(
+                          item?.latestTest?.result - item?.previousTest?.result
+                        ).toFixed(2);
+
                         return (
                           <Card
                             key={cardIdx}
@@ -159,7 +120,7 @@ export const HomeScreen: React.FC = () => {
                               variant={5}
                               weight="semiBold"
                             >
-                              {item.label}
+                              {`${item.label}  (${item?.unit})`}
                             </Heading>
                             <Grid
                               direction="row"
@@ -173,15 +134,14 @@ export const HomeScreen: React.FC = () => {
                                     fontWeight: "thin",
                                   }}
                                 >
-                                  {String(item.value)}
+                                  {`${item?.latestTest?.result}`}
                                 </Text>
                                 <Text
                                   style={{
-                                    color: item.change < 0 ? "red" : "green",
+                                    color: change < 0 ? "red" : "green",
                                   }}
                                 >
-                                  {(item.change < 0 ? "" : "+") +
-                                    String(item.change)}
+                                  {(change < 0 ? "" : "+") + String(change)}
                                 </Text>
                               </GridItem>
                               <GridItem>
@@ -189,9 +149,7 @@ export const HomeScreen: React.FC = () => {
                                   data={item.history}
                                   width={120}
                                   height={48}
-                                  color={
-                                    item.change < 0 ? "#ef4444" : "#60a5fa"
-                                  }
+                                  color={change < 0 ? "#ef4444" : "#60a5fa"}
                                 />
                               </GridItem>
                             </Grid>
@@ -201,6 +159,8 @@ export const HomeScreen: React.FC = () => {
                   </Grid>
                 )
               )}
+
+              <RedSeaReefMat />
             </Grid>
           </View>
           <View style={{ width: width - 40 }}>
@@ -211,80 +171,85 @@ export const HomeScreen: React.FC = () => {
                   weight="semiBold"
                   style={{ color: "white" }}
                 >
-                  Marty's Reef
+                  {tankName}
                 </Heading>
-
-                <Icon name="settings" width={24} height={24} fill={WHITE} />
+                <TouchableOpacity onPress={() => navigate("/settings")}>
+                  <Icon name="settings" width={24} height={24} fill={WHITE} />
+                </TouchableOpacity>
               </Grid>
 
-              {Array.from({ length: Math.ceil(cards.length / 3) }).map(
-                (_, rowIdx) => (
-                  <Grid direction="row" gap={16} key={rowIdx}>
-                    {cards
-                      .slice(rowIdx * 3, rowIdx * 3 + 3)
-                      .map((item, index) => {
-                        const cardIdx = rowIdx * 3 + index;
-                        return (
-                          <Card
-                            key={cardIdx}
-                            onDragStart={() => onDragStart(cardIdx)}
-                            onDragEnter={() => onDragEnter(cardIdx)}
-                            onDragEnd={onDragEnd}
-                            handleOnPress={() =>
-                              navigate("/element", {
-                                state: {
-                                  ...item,
-                                },
-                              })
-                            }
+              {Array.from({
+                length: Math.ceil(currentStandingStability?.data?.length / 3),
+              }).map((_, rowIdx) => (
+                <Grid direction="row" gap={16} key={rowIdx}>
+                  {currentStandingStability?.data
+                    ?.slice(rowIdx * 3, rowIdx * 3 + 3)
+                    .map((item, index) => {
+                      const cardIdx = rowIdx * 3 + index;
+
+                      const change = parseFloat(
+                        item?.latestTest?.result - item?.previousTest?.result
+                      ).toFixed(2);
+
+                      console.log({
+                        results: item?.allResults,
+                        v: item?.stability,
+                      });
+
+                      return (
+                        <Card
+                          key={cardIdx}
+                          onDragStart={() => onDragStart(cardIdx)}
+                          onDragEnter={() => onDragEnter(cardIdx)}
+                          onDragEnd={onDragEnd}
+                          handleOnPress={() =>
+                            navigate("/element", {
+                              state: {
+                                ...item,
+                              },
+                            })
+                          }
+                        >
+                          <Heading
+                            style={{ color: WHITE }}
+                            variant={5}
+                            weight="semiBold"
                           >
-                            <Heading
-                              style={{ color: WHITE }}
-                              variant={5}
-                              weight="semiBold"
-                            >
-                              {item.label}
-                            </Heading>
-                            <Grid
-                              direction="row"
-                              justifyContent="space-between"
-                            >
-                              <GridItem>
-                                <Text
-                                  style={{
-                                    color: "white",
-                                    fontSize: 32,
-                                    fontWeight: "thin",
-                                  }}
-                                >
-                                  {String(item.value)}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color: item.change < 0 ? "red" : "green",
-                                  }}
-                                >
-                                  {(item.change < 0 ? "" : "+") +
-                                    String(item.change)}
-                                </Text>
-                              </GridItem>
-                              <GridItem>
-                                <LineChart
-                                  data={item.history}
-                                  width={120}
-                                  height={48}
-                                  color={
-                                    item.change < 0 ? "#ef4444" : "#60a5fa"
-                                  }
-                                />
-                              </GridItem>
-                            </Grid>
-                          </Card>
-                        );
-                      })}
-                  </Grid>
-                )
-              )}
+                            {`${item.label}  Stability`}
+                          </Heading>
+                          <Grid direction="row" justifyContent="space-between">
+                            <GridItem>
+                              <Text
+                                style={{
+                                  color: "white",
+                                  fontSize: 32,
+                                  fontWeight: "thin",
+                                }}
+                              >
+                                {`${item?.stability}%`}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "white",
+                                }}
+                              >
+                                Coefficient of Variation
+                              </Text>
+                            </GridItem>
+                            <GridItem>
+                              <LineChart
+                                data={item.history}
+                                width={120}
+                                height={48}
+                                color={change < 0 ? "#ef4444" : "#60a5fa"}
+                              />
+                            </GridItem>
+                          </Grid>
+                        </Card>
+                      );
+                    })}
+                </Grid>
+              ))}
             </Grid>
           </View>
         </ScrollView>

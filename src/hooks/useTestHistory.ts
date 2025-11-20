@@ -7,12 +7,14 @@ import {
   removeDosageById,
   removeTestById,
   setCurrentStanding,
+  setCurrentStandingStability,
   setLatestTest,
   setTestSelectionIndex,
 } from "../store/slices/testingSlice";
 import { useApiRequest } from "./useApiRequest";
 import { useAudience } from "./useAudience";
 import { useAppDispatch, useAppSelector } from "./useRedux";
+import { selectActiveTankId } from "../store/slices/userConfigSlice";
 
 type Props = {
   type: "home" | "all" | "icp";
@@ -26,8 +28,10 @@ type Props = {
 export const useTestHistoryForTank = () => {
   const dispatch = useAppDispatch();
 
+  const tankId = useAppSelector(selectActiveTankId);
+
   const getData = async (month) => {
-    const tankId = await AsyncStorage.getItem("tankId");
+    if (!tankId) return;
 
     const response = await apiClient.post(`/tests`, {
       tankId: tankId,
@@ -43,15 +47,27 @@ export const useTestHistoryForTank = () => {
 
 export const useTestHistoryCurrentStanding = () => {
   const dispatch = useAppDispatch();
+  const tankId = useAppSelector(selectActiveTankId);
 
-  const getData = async () => {
-    const tankId = await AsyncStorage.getItem("tankId");
+  const getData = async (stability = false) => {
+    if (!tankId) return;
 
-    const response = await apiClient.post(`/tests/currentStanding`, {
-      tankId: tankId,
-    });
+    const stabilityFormula = await AsyncStorage.getItem("stabilityFormula");
 
-    dispatch(setCurrentStanding(response?.data?.data));
+    const response = await apiClient.post(
+      stability
+        ? `/tests/currentStanding?cpanel=true&stabilityFormula=${stabilityFormula ?? "cv"}`
+        : `/tests/currentStanding?cpanel=true`,
+      {
+        tankId: tankId,
+      }
+    );
+
+    dispatch(
+      stability
+        ? setCurrentStandingStability(response?.data?.data)
+        : setCurrentStanding(response?.data?.data)
+    );
   };
 
   return useApiRequest(getData);
@@ -59,6 +75,7 @@ export const useTestHistoryCurrentStanding = () => {
 
 export const useGetTestHistory = () => {
   const dispatch = useAppDispatch();
+  const tankId = useAppSelector(selectActiveTankId);
 
   const getTestHistory = async ({
     type,
@@ -67,8 +84,7 @@ export const useGetTestHistory = () => {
     referenceIndex,
     limit,
   }: Props) => {
-    const tankId = await AsyncStorage.getItem("tankId");
-
+    if (!tankId) return;
     const response = await apiClient.post("/tests", {
       type,
       date,

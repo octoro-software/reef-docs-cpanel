@@ -1,23 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { SystemBars } from "react-native-edge-to-edge";
 import { getAppDimensions } from "../utility/dimensions";
-import { Grid, GridItem, Heading, Icon, Select, Text } from "../components";
+import { Grid, GridItem, Heading, Select, Text } from "../components";
 import { MaterialIcons } from "@expo/vector-icons";
-import { LineChart } from "../components/LineChart";
 import { WHITE } from "../constants";
-import { useNavigate } from "react-router-native";
 import { useGetTanks, useTankList } from "../hooks/useTanks";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const { height, width } = getAppDimensions();
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import {
+  selectActiveTankId,
+  selectActiveTankName,
+  selectRedSeaFeed,
+  setActiveTank,
+  setRedseaFeed,
+} from "../store/slices/userConfigSlice";
+import { RawTextInput } from "../components/Form/RawTextInput/RawTextInput";
+const { height } = getAppDimensions();
 
 export const SettingsScreen: React.FC = () => {
-  const [activeTank, setActiveTank] = useState(null);
-
   const tanks = useTankList();
 
   const [getTanks] = useGetTanks();
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getTanks();
@@ -27,18 +33,25 @@ export const SettingsScreen: React.FC = () => {
 
   useEffect(() => {
     SystemBars.setHidden(true);
-    getActiveTankValue("tankId");
   }, []);
 
-  const getActiveTankValue = async (key: string) => {
-    const value = await AsyncStorage.getItem(key);
-    setActiveTank(value);
+  const activeTank = useAppSelector(selectActiveTankId);
+
+  const redSeaFeed = useAppSelector(selectRedSeaFeed);
+
+  console.log(redSeaFeed);
+
+  const handleTankSelect = async (value: string) => {
+    dispatch(setActiveTank(value));
+
+    const tank = tanks?.find((t) => t.id === value);
+
+    dispatch(selectActiveTankName(tank?.name || "Unnamed Tank"));
   };
 
-  const handleValueSelect = async (key: string, value: string) => {
-    await AsyncStorage.setItem(key, value);
-
-    setActiveTank(value);
+  const handleRedSeaIpChange = (value: string) => {
+    console.log(value);
+    dispatch(setRedseaFeed({ ipAddress: value }));
   };
 
   return (
@@ -83,6 +96,7 @@ export const SettingsScreen: React.FC = () => {
             style={{
               backgroundColor: "rgba(16, 24, 44, 0.95)",
               height: height - 32,
+              padding: 16,
             }}
           >
             {activeMenu === "tank" && (
@@ -92,9 +106,23 @@ export const SettingsScreen: React.FC = () => {
                   labelKey="name"
                   valueKey="id"
                   label="Active Tank"
-                  onConfirm={(v) => handleValueSelect("tankId", v)}
+                  onConfirm={(v) => handleTankSelect(v)}
                   title="Select Tank"
                   value={activeTank}
+                />
+              </Grid>
+            )}
+            {activeMenu === "feed" && (
+              <Grid direction="column" gap={16}>
+                <Heading variant={4} weight="semiBold" style={{ color: WHITE }}>
+                  Red Sea
+                </Heading>
+
+                <RawTextInput
+                  label="IP Address ( This will be changed to a lookup )"
+                  onChange={(v) => handleRedSeaIpChange(v)}
+                  value={redSeaFeed?.ipAddress}
+                  style={{ color: WHITE }}
                 />
               </Grid>
             )}

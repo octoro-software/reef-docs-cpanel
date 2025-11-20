@@ -77,6 +77,7 @@ export const LoginScreen: React.FC = () => {
         }, 5000);
       }
     } catch (error) {
+      console.log(error);
       // If any error happened during login
       setError("email", {
         type: "manual",

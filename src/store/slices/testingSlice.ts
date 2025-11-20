@@ -7,6 +7,7 @@ const initialState = {
     monthsWithTests: [],
   },
   currentStanding: {},
+  currentStandingStability: {},
   testSelectionIndex: [],
   elementViewData: {
     dosingData: [],
@@ -41,6 +42,9 @@ const testingSlice = createSlice({
     },
     setCurrentStanding: (state, action) => {
       state.currentStanding = action.payload;
+    },
+    setCurrentStandingStability: (state, action) => {
+      state.currentStandingStability = action.payload;
     },
     setLatestTestMonth: (state, action) => {
       state.latestTest = {
@@ -79,6 +83,7 @@ export const {
   setChartData,
   setDosageData,
   chartRemoveDosageById,
+  setCurrentStandingStability,
 } = testingSlice.actions;
 
 export default testingSlice.reducer;
@@ -87,6 +92,9 @@ export const selectLatestTest = (state) => state.testing.latestTest;
 
 export const selectTestCurrentStanding = (state) =>
   state.testing.currentStanding;
+
+export const selectTestCurrentStandingStability = (state) =>
+  state.testing.currentStandingStability;
 
 export const selectTestSelectionIndex = (state) =>
   state.testing.testSelectionIndex;

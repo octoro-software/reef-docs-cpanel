@@ -7,6 +7,7 @@ import tankReducer from "./slices/tankSlice";
 import testingReducer from "./slices/testingSlice";
 import globalSlice from "./slices/globalSlice";
 import userConfigSlice from "./slices/userConfigSlice";
+import redSeaSlice from "./slices/redSeaSlice";
 
 // Persist configuration: only persist userConfig
 const persistConfig = {
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   testing: testingReducer,
   global: globalSlice,
   userConfig: userConfigSlice, // No need to wrap separately
+  redSea: redSeaSlice,
 });
 
 // Apply persistReducer to the entire rootReducer

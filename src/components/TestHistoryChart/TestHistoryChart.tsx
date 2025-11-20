@@ -38,7 +38,7 @@ import {
   setDosageData,
 } from "../../store/slices/testingSlice";
 import apiClient from "../../api/apiClient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { selectActiveTankId } from "../../store/slices/userConfigSlice";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const CHART_HEIGHT = 250;
@@ -69,10 +69,10 @@ export const TestHistoryChart = ({
 
   const dosageData = useAppSelector(selectDosageData);
 
+  const tankId = useAppSelector(selectActiveTankId);
+
   const getHistoricResults = async () => {
     setLoading(true);
-
-    const tankId = await AsyncStorage.getItem("tankId");
 
     const response = await apiClient.post("/tests/elementGraphHistory", {
       elementId,
@@ -156,8 +156,6 @@ export const TestHistoryChart = ({
       "1Y": 12,
     };
     const months = monthsMap[tf] || 1;
-
-    const tankId = await AsyncStorage.getItem("tankId");
 
     const response = await apiClient.post("/tests/elementGraphHistory", {
       elementId,
