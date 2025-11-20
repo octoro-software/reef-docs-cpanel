@@ -11,8 +11,11 @@ import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import {
   selectActiveTankId,
   selectActiveTankName,
+  selectApexFeed,
   selectRedSeaFeed,
   setActiveTank,
+  setActiveTankName,
+  setApexFeed,
   setRedseaFeed,
 } from "../store/slices/userConfigSlice";
 import { RawTextInput } from "../components/Form/RawTextInput/RawTextInput";
@@ -39,19 +42,27 @@ export const SettingsScreen: React.FC = () => {
 
   const redSeaFeed = useAppSelector(selectRedSeaFeed);
 
-  console.log(redSeaFeed);
+  const apexFeed = useAppSelector(selectApexFeed);
 
   const handleTankSelect = async (value: string) => {
     dispatch(setActiveTank(value));
 
     const tank = tanks?.find((t) => t.id === value);
 
-    dispatch(selectActiveTankName(tank?.name || "Unnamed Tank"));
+    dispatch(setActiveTankName(tank?.name || "Unnamed Tank"));
   };
 
   const handleRedSeaIpChange = (value: string) => {
-    console.log(value);
     dispatch(setRedseaFeed({ ipAddress: value }));
+  };
+  const handleRedSeaRefreshTimeChange = (value: string) => {
+    dispatch(setRedseaFeed({ refreshTime: value }));
+  };
+  const handleApexIpChange = (value: string) => {
+    dispatch(setApexFeed({ ipAddress: value }));
+  };
+  const handleApexRefreshTimeChange = (value: string) => {
+    dispatch(setApexFeed({ refreshTime: value }));
   };
 
   return (
@@ -122,6 +133,28 @@ export const SettingsScreen: React.FC = () => {
                   label="IP Address ( This will be changed to a lookup )"
                   onChange={(v) => handleRedSeaIpChange(v)}
                   value={redSeaFeed?.ipAddress}
+                  style={{ color: WHITE }}
+                />
+                <RawTextInput
+                  label="Refresh Time ( Minutes )"
+                  onChange={(v) => handleRedSeaRefreshTimeChange(v)}
+                  value={redSeaFeed?.refreshTime}
+                  style={{ color: WHITE }}
+                />
+                <Heading variant={4} weight="semiBold" style={{ color: WHITE }}>
+                  Apex
+                </Heading>
+
+                <RawTextInput
+                  label="IP Address ( This will be changed to a lookup )"
+                  onChange={(v) => handleApexIpChange(v)}
+                  value={apexFeed?.ipAddress}
+                  style={{ color: WHITE }}
+                />
+                <RawTextInput
+                  label="Refresh Time ( Minutes )"
+                  onChange={(v) => handleApexRefreshTimeChange(v)}
+                  value={apexFeed?.refreshTime}
                   style={{ color: WHITE }}
                 />
               </Grid>

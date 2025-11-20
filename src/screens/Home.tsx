@@ -17,6 +17,7 @@ import {
 } from "../store/slices/testingSlice";
 import { selectActiveTankName } from "../store/slices/userConfigSlice";
 import { RedSeaReefMat } from "../components/RedSeaReefMat/RedSeaReefMat";
+import { Apex } from "../components/Apex/Apex";
 const { height, width } = getAppDimensions();
 
 export const HomeScreen: React.FC = () => {
@@ -74,7 +75,25 @@ export const HomeScreen: React.FC = () => {
         style={styles.bgGradient}
       >
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <View style={{ width: width - 40 }}>
+          <View style={{ width: width, paddingHorizontal: 20 }}>
+            <Grid direction="column" gap={16}>
+              <Grid direction="row" justifyContent="space-between">
+                <Heading
+                  variant={5}
+                  weight="semiBold"
+                  style={{ color: "white" }}
+                >
+                  {tankName}
+                </Heading>
+                <TouchableOpacity onPress={() => navigate("/settings")}>
+                  <Icon name="settings" width={24} height={24} fill={WHITE} />
+                </TouchableOpacity>
+              </Grid>
+
+              <Apex />
+            </Grid>
+          </View>
+          <View style={{ width: width, paddingHorizontal: 20 }}>
             <Grid direction="column" gap={16}>
               <Grid direction="row" justifyContent="space-between">
                 <Heading
@@ -163,7 +182,7 @@ export const HomeScreen: React.FC = () => {
               <RedSeaReefMat />
             </Grid>
           </View>
-          <View style={{ width: width - 40 }}>
+          <View style={{ width: width, paddingHorizontal: 20 }}>
             <Grid direction="column" gap={16}>
               <Grid direction="row" justifyContent="space-between">
                 <Heading
@@ -190,11 +209,6 @@ export const HomeScreen: React.FC = () => {
                       const change = parseFloat(
                         item?.latestTest?.result - item?.previousTest?.result
                       ).toFixed(2);
-
-                      console.log({
-                        results: item?.allResults,
-                        v: item?.stability,
-                      });
 
                       return (
                         <Card
@@ -266,8 +280,8 @@ const styles = StyleSheet.create({
   },
   bgGradient: {
     flex: 1,
-    padding: 20,
     position: "relative",
+    paddingVertical: 20,
   },
 
   card: {

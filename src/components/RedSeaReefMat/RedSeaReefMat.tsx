@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
-import { useGetRedSeaFeed, useRedSeaEnabled } from "../../hooks/useRedSea";
+import {
+  useAutoRedSeaFeed,
+  useGetRedSeaFeed,
+  useRedSeaEnabled,
+} from "../../hooks/useRedSea";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -14,13 +18,9 @@ import redSeaLogo from "./red-sea.png";
 export const RedSeaReefMat: React.FC = () => {
   const redSeaFeedEnabled = useRedSeaEnabled();
 
-  const [getRedSeaFeed] = useGetRedSeaFeed();
+  useAutoRedSeaFeed();
 
   const redSeaData = useAppSelector(selectRedSeaData);
-
-  useEffect(() => {
-    getRedSeaFeed();
-  }, []);
 
   if (!redSeaFeedEnabled) return <></>;
 
