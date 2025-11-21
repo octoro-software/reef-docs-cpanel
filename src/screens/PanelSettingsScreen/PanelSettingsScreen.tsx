@@ -11,6 +11,7 @@ import { SettingsTabs } from "../../components/SettingsTabs/SettingsTabs";
 import { TankSettingsForm } from "../../components/SettingForms/TankSettingsForm/TankSettingsForm";
 import { FeedSettingsForm } from "../../components/SettingForms/FeedSettingsForm/FeedSettingsForm";
 import { DashboardSettingsForm } from "../../components/SettingForms/DashboardSettingsForm/DashboardSettingsForm";
+import { DosingFormulaSettingsForm } from "../../components/SettingForms/DosingFormulaSettingsForm/DosingFormulaSettingsForm";
 
 const { height } = getAppDimensions();
 
@@ -50,6 +51,8 @@ export const PanelSettingsScreen: React.FC = () => {
         {activeMenu === "tank" && <TankSettingsForm />}
 
         {activeMenu === "feed" && <FeedSettingsForm />}
+
+        {activeMenu === "dosing" && <DosingFormulaSettingsForm />}
 
         {activeMenu === "dashboard" && <DashboardSettingsForm />}
       </ScrollView>
