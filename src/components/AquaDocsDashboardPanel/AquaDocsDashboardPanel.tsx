@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView } from "react-native";
 import { useNavigate } from "react-router-native";
 
 import { Grid, GridItem } from "../Grid/Grid";
 import { selectTestCurrentStanding } from "../../store/slices/testingSlice";
 
-import { useTestHistoryCurrentStanding } from "../../hooks/useTestHistory";
+import { useAutoAquaDocsParamFeed } from "../../hooks/useTestHistory";
 import { useAppSelector } from "../../hooks/useRedux";
 
 import { DashboardCard } from "../../elements/DashboardCard/DashboardCard";
@@ -17,17 +17,13 @@ import { LineChart } from "../LineChart";
 import { WHITE } from "../../constants";
 
 export const AquaDocsDashboardPanel: React.FC = () => {
-  const [getCurrentStanding] = useTestHistoryCurrentStanding();
+  useAutoAquaDocsParamFeed();
 
   const currentStanding = useAppSelector(selectTestCurrentStanding);
 
   const cards = currentStanding?.data ?? [];
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getCurrentStanding();
-  }, []);
 
   return (
     <ScrollView

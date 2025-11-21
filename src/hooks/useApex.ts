@@ -64,7 +64,6 @@ export const useAutoApexFeed = () => {
 
     const interval = setInterval(
       () => {
-        console.log("Apex auto feed interval fired");
         getFeed();
       },
       refreshTime * 60 * 1000

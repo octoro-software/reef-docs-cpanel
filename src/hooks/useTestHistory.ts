@@ -1,20 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiClient from "../api/apiClient";
-import { selectElements } from "../store/slices/IcpSlice";
-import { selectActiveTank } from "../store/slices/tankSlice";
+
 import {
-  chartRemoveDosageById,
-  removeDosageById,
-  removeTestById,
+  setAquaDocsFeedSyncing,
   setCurrentStanding,
   setCurrentStandingStability,
-  setLatestTest,
   setTestSelectionIndex,
 } from "../store/slices/testingSlice";
 import { useApiRequest } from "./useApiRequest";
-import { useAudience } from "./useAudience";
 import { useAppDispatch, useAppSelector } from "./useRedux";
-import { selectActiveTankId } from "../store/slices/userConfigSlice";
+import {
+  selectActiveTankId,
+  selectAquaDocsFeed,
+} from "../store/slices/userConfigSlice";
+import { useEffect } from "react";
 
 type Props = {
   type: "home" | "all" | "icp";
@@ -25,26 +24,6 @@ type Props = {
   limit?: number;
 };
 
-export const useTestHistoryForTank = () => {
-  const dispatch = useAppDispatch();
-
-  const tankId = useAppSelector(selectActiveTankId);
-
-  const getData = async (month) => {
-    if (!tankId) return;
-
-    const response = await apiClient.post(`/tests`, {
-      tankId: tankId,
-      limit: 4,
-      month,
-    });
-
-    dispatch(setLatestTest(response?.data?.data));
-  };
-
-  return useApiRequest(getData);
-};
-
 export const useTestHistoryCurrentStanding = () => {
   const dispatch = useAppDispatch();
   const tankId = useAppSelector(selectActiveTankId);
@@ -53,6 +32,8 @@ export const useTestHistoryCurrentStanding = () => {
     if (!tankId) return;
 
     const stabilityFormula = await AsyncStorage.getItem("stabilityFormula");
+
+    dispatch(setAquaDocsFeedSyncing(true));
 
     const response = await apiClient.post(
       stability
@@ -68,9 +49,55 @@ export const useTestHistoryCurrentStanding = () => {
         ? setCurrentStandingStability(response?.data?.data)
         : setCurrentStanding(response?.data?.data)
     );
+
+    dispatch(setAquaDocsFeedSyncing(false));
   };
 
   return useApiRequest(getData);
+};
+
+export const useAutoAquaDocsStabilityFeed = () => {
+  const aquaDocsFeed = useAppSelector(selectAquaDocsFeed);
+
+  const [getFeed] = useTestHistoryCurrentStanding();
+
+  const refreshTime = aquaDocsFeed?.refreshTime;
+
+  useEffect(() => {
+    if (!refreshTime) return;
+
+    const interval = setInterval(
+      () => {
+        getFeed(true);
+      },
+      (refreshTime || 5) * 60 * 1000
+    );
+    return () => clearInterval(interval);
+  }, [refreshTime]);
+};
+
+export const useAutoAquaDocsParamFeed = () => {
+  const aquaDocsFeed = useAppSelector(selectAquaDocsFeed);
+
+  const [getFeed] = useTestHistoryCurrentStanding();
+
+  const refreshTime = aquaDocsFeed?.refreshTime;
+
+  useEffect(() => {
+    getFeed();
+  }, []);
+
+  useEffect(() => {
+    if (!refreshTime) return;
+
+    const interval = setInterval(
+      () => {
+        getFeed();
+      },
+      (refreshTime || 5) * 60 * 1000
+    );
+    return () => clearInterval(interval);
+  }, [refreshTime]);
 };
 
 export const useGetTestHistory = () => {

@@ -6,6 +6,13 @@ const initialState = {
   aquaDocsFeed: {
     refreshTime: 5,
   },
+  dashboardSettings: {
+    panelPriority: {
+      apex: 1,
+      parameters: 2,
+      stability: 3,
+    },
+  },
   tankId: null,
   tankName: "",
   storeMode: null,
@@ -33,6 +40,12 @@ const userConfigSlice = createSlice({
     setStoreMode: (state, action) => {
       state.storeMode = action.payload;
     },
+    setPanelPriority: (state, action) => {
+      state.dashboardSettings.panelPriority = {
+        ...state.dashboardSettings.panelPriority,
+        ...action.payload,
+      };
+    },
   },
 });
 
@@ -43,6 +56,7 @@ export const {
   setStoreMode,
   setApexFeed,
   setAquaDocsFeed,
+  setPanelPriority,
 } = userConfigSlice.actions;
 
 export default userConfigSlice.reducer;
@@ -57,3 +71,5 @@ export const selectTestingUserConfig = (state) => state.userConfig.testing;
 export const selectAudience = (state) => state.userConfig.audience;
 
 export const selectStoreMode = (state) => state.userConfig.shopMode;
+export const selectDashboardSettings = (state) =>
+  state.userConfig.dashboardSettings;

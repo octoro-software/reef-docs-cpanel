@@ -39,6 +39,10 @@ export const useAutoRedSeaFeed = () => {
   const refreshTime = redSeaFeed?.refreshTime;
 
   useEffect(() => {
+    getFeed();
+  }, []);
+
+  useEffect(() => {
     if (!refreshTime || !redSeaEnabled) return;
 
     const interval = setInterval(

@@ -12,8 +12,28 @@ import { Text } from "../Text/Text";
 import { Heading } from "../Heading/Heading";
 
 import { WHITE } from "../../constants";
+import { View } from "react-native";
 
-export const AquaDocsDashboardStabilityPanel: React.FC = () => {
+type props = {
+  title?: string;
+  description?: string;
+  type?:
+    | "cvStability"
+    | "rangeStability"
+    | "targetCenteredStability"
+    | "toleranceBandStability"
+    | "madStability"
+    | "swingFrequencyStability"
+    | "driftStability";
+  disablePercentage?: boolean;
+};
+
+export const AquaDocsDashboardStabilityPanel: React.FC<props> = ({
+  type = "cvStability",
+  title = "Coefficient of Variation",
+  description,
+  disablePercentage,
+}) => {
   const [getCurrentStanding] = useTestHistoryCurrentStanding();
 
   const currentStandingStability = useAppSelector(
@@ -28,6 +48,18 @@ export const AquaDocsDashboardStabilityPanel: React.FC = () => {
 
   return (
     <Grid direction="column" gap={16}>
+      <View>
+        <Heading
+          variant={6}
+          weight="semiBold"
+          style={{ color: WHITE, textAlign: "center" }}
+        >
+          {title}
+        </Heading>
+        <Text style={{ color: WHITE, textAlign: "center", fontSize: 12 }}>
+          {description}
+        </Text>
+      </View>
       {Array.from({
         length: Math.ceil(currentStandingStability?.data?.length / 3),
       }).map((_, rowIdx) => (
@@ -64,14 +96,16 @@ export const AquaDocsDashboardStabilityPanel: React.FC = () => {
                           fontWeight: "thin",
                         }}
                       >
-                        {`${item?.stability}%`}
+                        {disablePercentage
+                          ? `${item?.[type]}`
+                          : `${item?.[type]} %`}
                       </Text>
                       <Text
                         style={{
                           color: "white",
                         }}
                       >
-                        Coefficient of Variation
+                        {title}
                       </Text>
                     </GridItem>
                   </Grid>

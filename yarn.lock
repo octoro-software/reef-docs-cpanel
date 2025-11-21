@@ -3465,6 +3465,11 @@ events-universal@^1.0.0:
   dependencies:
     bare-events "^2.7.0"
 
+events@^3.0.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
+  integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
+
 exec-async@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/exec-async/-/exec-async-2.2.0.tgz#c7c5ad2eef3478d38390c6dd3acfe8af0efc8301"
@@ -5757,6 +5762,13 @@ react-native-uuid@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/react-native-uuid/-/react-native-uuid-2.0.3.tgz#f85f8a8d68e52e3f1c18ba0f02ec7776f9d4a0da"
   integrity sha512-f/YfIS2f5UB+gut7t/9BKGSCYbRA9/74A5R1MDp+FLYsuS+OSWoiM/D8Jko6OJB6Jcu3v6ONuddvZKHdIGpeiw==
+
+react-native-zeroconf@^0.13.8:
+  version "0.13.8"
+  resolved "https://registry.yarnpkg.com/react-native-zeroconf/-/react-native-zeroconf-0.13.8.tgz#62fe5279fdf81250a0da647454f2c3b8ee8cacae"
+  integrity sha512-frGS1xNbNCA7BfETSubNYODu7s7mlU55vgArEzZW9EuSQ8SYqlNQC5zpKHDZEAXy4fFqe+CgnMCxKAjQqYM6XA==
+  dependencies:
+    events "^3.0.0"
 
 react-native@0.79.6:
   version "0.79.6"
