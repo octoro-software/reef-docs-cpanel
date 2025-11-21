@@ -77,7 +77,7 @@ export const FeedSettingsForm: React.FC = () => {
     // generate a collection of dates for the past year, one per month including the current month
     const now = new Date();
     const months: { date: string; days: number }[] = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 12; i++) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       // Get number of days in the month
       const days = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
