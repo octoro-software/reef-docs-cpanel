@@ -18,9 +18,13 @@ import {
   setRedseaFeed,
 } from "../../../store/slices/userConfigSlice";
 import { useDeviceDiscovery } from "../../../hooks/useDeviceDiscovery";
+import { Button } from "../../Button/Button";
+import { useGetApexDataLog } from "../../../hooks/useApex";
 
 export const FeedSettingsForm: React.FC = () => {
   const dispatch = useAppDispatch();
+
+  const [backdatePending, setBackdatePending] = React.useState(false);
 
   const redSeaFeed = useAppSelector(selectRedSeaFeed);
 
@@ -64,6 +68,32 @@ export const FeedSettingsForm: React.FC = () => {
     dispatch(
       setRedseaFeed({ ipAddress: host, deviceName: chosenDevice?.name })
     ); // maybe rename this to baseUrl later
+  };
+
+  const [getApexDataLog] = useGetApexDataLog();
+
+  const handleBackdateApex = async () => {
+    setBackdatePending(true);
+    // generate a collection of dates for the past year, one per month including the current month
+    const now = new Date();
+    const months: { date: string; days: number }[] = [];
+    for (let i = 0; i < 1; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      // Get number of days in the month
+      const days = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+      // Format date as yymmdd
+      const year = String(d.getFullYear()).slice(2, 4);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const yymmdd = `${year}${month}${day}`;
+      months.push({ date: yymmdd, days });
+    }
+
+    const promises = months.map(({ date, days }) => getApexDataLog(date, days));
+
+    await Promise.all(promises);
+
+    setBackdatePending(false);
   };
 
   return (
@@ -166,6 +196,22 @@ export const FeedSettingsForm: React.FC = () => {
         onChange={(v) => handleApexRefreshTimeChange(v)}
         value={apexFeed?.refreshTime}
         style={{ color: WHITE }}
+      />
+
+      <Text style={{ color: WHITE }}>
+        Pressing the button below will collect upto 1 years worth of test data
+        from the Apex device and send it to Aqua Docs. This will then be
+        processed on our servers. You will be emailed when each month has
+        finished processing. Your dashboard will gradually update and the
+        reports will become much more enriched. Once the data is processed the
+        app will continue to sync moving forward based on your set interval
+        above.
+      </Text>
+      <Button
+        title={backdatePending ? "Please Wait..." : "Sync Historic Apex Data"}
+        style={{ backgroundColor: "orange" }}
+        onPress={handleBackdateApex}
+        disabled={backdatePending}
       />
     </Grid>
   );

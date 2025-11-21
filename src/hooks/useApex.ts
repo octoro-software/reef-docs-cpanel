@@ -1,9 +1,14 @@
 import axios from "axios";
-import { selectApexFeed, setApexFeed } from "../store/slices/userConfigSlice";
+import {
+  selectActiveTankId,
+  selectApexFeed,
+  setApexFeed,
+} from "../store/slices/userConfigSlice";
 import { useAppDispatch, useAppSelector } from "./useRedux";
 import { useEffect } from "react";
 import { XMLParser } from "fast-xml-parser";
 import { setApexSyncing } from "../store/slices/apexSlice";
+import apiClient from "../api/apiClient";
 
 export const useApexEnabled = () => {
   const apexFeed = useAppSelector(selectApexFeed);
@@ -12,6 +17,51 @@ export const useApexEnabled = () => {
     return true;
   }
   return false;
+};
+
+export const useGetApexDataLog = () => {
+  const apexFeed = useAppSelector(selectApexFeed);
+
+  const tankId = useAppSelector(selectActiveTankId);
+
+  const fn = async (date: string, days = 1) => {
+    const response = await axios
+      .get(
+        `http://${apexFeed.ipAddress}/datalog.xml?sdate=${date}&days=${days}`
+      )
+      .catch((error) => {
+        console.log("Error fetching Apex status:", error);
+        return null;
+      });
+
+    const data = response?.data;
+
+    const parser = new XMLParser();
+    const json = parser.parse(data);
+
+    if (!json?.datalog?.record || json?.datalog?.record.length === 0) {
+      console.log("No datalog records found for the given date.");
+      return;
+    }
+
+    const blob = new Blob([data], { type: "application/xml" });
+
+    const formData = new FormData();
+
+    formData.append("apex_xml", blob, `apex_data.xml`);
+
+    formData.append("tankId", tankId.toString());
+
+    const postXmlData = await apiClient.post("tests/apex/import", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return postXmlData;
+  };
+
+  return [fn];
 };
 
 export const useGetApexStatus = () => {
