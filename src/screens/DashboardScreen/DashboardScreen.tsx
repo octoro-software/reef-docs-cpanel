@@ -13,6 +13,7 @@ import { AquaDocsDashboardPanel } from "../../components/AquaDocsDashboardPanel/
 import { AquaDocsDashboardStabilityPanel } from "../../components/AquaDocsDashboardStabilityPanel/AquaDocsDashboardStabilityPanel";
 import { ApexDashboardPanel } from "../../components/ApexDashboardPanel/ApexDashboardPanel";
 import BootSplash from "react-native-bootsplash";
+import { useTestHistoryCurrentStanding } from "../../hooks/useTestHistory";
 
 const { height } = getAppDimensions();
 
@@ -21,6 +22,12 @@ export const DashboardScreen: React.FC = () => {
     SystemBars.setHidden(true);
     SystemBars.setStyle("dark");
     BootSplash.hide();
+  }, []);
+
+  const [getCurrentStanding] = useTestHistoryCurrentStanding();
+
+  useEffect(() => {
+    getCurrentStanding(true);
   }, []);
 
   return (

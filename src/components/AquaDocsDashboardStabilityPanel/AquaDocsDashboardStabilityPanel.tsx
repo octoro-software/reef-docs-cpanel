@@ -34,17 +34,11 @@ export const AquaDocsDashboardStabilityPanel: React.FC<props> = ({
   description,
   disablePercentage,
 }) => {
-  const [getCurrentStanding] = useTestHistoryCurrentStanding();
-
   const currentStandingStability = useAppSelector(
     selectTestCurrentStandingStability
   );
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getCurrentStanding(true);
-  }, []);
 
   return (
     <Grid direction="column" gap={16}>

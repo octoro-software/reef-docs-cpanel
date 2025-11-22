@@ -72,8 +72,6 @@ const globalSlice = createSlice({
       state.socialFullScreen = action.payload;
     },
 
-
-
     setScrollDirection: (state, action) => {
       state.scrollDirection = action.payload;
     },
@@ -109,6 +107,14 @@ const globalSlice = createSlice({
       state.urgentPostAvailable = action.payload?.urgentPostAvailable || false;
       state.postAcceptedTerms = action.payload?.postTermsAccepted || false;
     },
+
+    setApexInitialSyncComplete: (state, action) => {
+      state.user = {
+        ...state.user,
+        apexInitialSyncComplete: true,
+      };
+    },
+
     setUserLinkedProfile: (state, action) => {
       state.user = {
         ...state.user,
@@ -204,6 +210,7 @@ export const {
   clearNotificationCount,
   appendNotifications,
   setScrollDirection,
+  setApexInitialSyncComplete,
   setSocialFullScreen,
   setUrgentPostAvailable,
   setPostAcceptedTerms,

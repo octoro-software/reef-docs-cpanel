@@ -9,6 +9,11 @@ import { useEffect } from "react";
 import { XMLParser } from "fast-xml-parser";
 import { setApexSyncing } from "../store/slices/apexSlice";
 import apiClient from "../api/apiClient";
+import * as FileSystem from "expo-file-system";
+import {
+  setApexInitialSyncComplete,
+  setUserProfile,
+} from "../store/slices/globalSlice";
 
 export const useApexEnabled = () => {
   const apexFeed = useAppSelector(selectApexFeed);
@@ -34,30 +39,20 @@ export const useGetApexDataLog = () => {
         return null;
       });
 
-    const data = response?.data;
+    const xmlString = response.data;
 
     const parser = new XMLParser();
-    const json = parser.parse(data);
+    const json = parser.parse(xmlString);
 
     if (!json?.datalog?.record || json?.datalog?.record.length === 0) {
       console.log("No datalog records found for the given date.");
       return;
     }
 
-    const blob = new Blob([data], { type: "application/xml" });
-
-    const formData = new FormData();
-
-    formData.append("apex_xml", blob, `apex_data.xml`);
-
-    formData.append("tankId", tankId.toString());
-
-    const postXmlData = await apiClient.post("tests/apex/import", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    const postXmlData = await apiClient.post("tests/apex/import", {
+      tankId: tankId.toString(),
+      apex_xml: xmlString,
     });
-
     return postXmlData;
   };
 
@@ -120,4 +115,16 @@ export const useAutoApexFeed = () => {
     );
     return () => clearInterval(interval);
   }, [refreshTime, apexEnabled]);
+};
+
+export const useApexInitialSyncComplete = () => {
+  const dispatch = useAppDispatch();
+
+  const fn = async () => {
+    const response = await apiClient.post("tests/apex/markSyncComplete", {});
+
+    dispatch(setApexInitialSyncComplete({ apexInitialSyncComplete: true }));
+  };
+
+  return [fn];
 };

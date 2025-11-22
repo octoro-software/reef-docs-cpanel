@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   redseaFeed: {},
-  apexFeed: {},
+  apexFeed: {
+    initialSyncComplete: false,
+  },
   aquaDocsFeed: {
     refreshTime: 5,
   },
