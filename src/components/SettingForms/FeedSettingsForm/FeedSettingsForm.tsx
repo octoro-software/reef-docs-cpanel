@@ -226,7 +226,7 @@ export const FeedSettingsForm: React.FC = () => {
             title={
               backdatePending ? "Please Wait..." : "Sync Historic Apex Data"
             }
-            style={{ backgroundColor: "orange" }}
+            style={{ backgroundColor: "orange", marginTop: 16 }}
             onPress={handleBackdateApex}
             disabled={backdatePending}
           />
